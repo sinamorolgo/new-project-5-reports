@@ -1,6 +1,7 @@
 {
-  "generated_at": "2026-05-14T22:10:40.259522+00:00",
+  "generated_at": "2026-05-14T22:59:39.888202+00:00",
   "reports": [
+    "presentation.html",
     "03-itinerary/report-picks-route.md",
     "04-food-drink/coffee/tokyo-coffee-otaku-report.md",
     "04-food-drink/ramen/tokyo-ramen-otaku-report.md",
@@ -11,6 +12,7 @@
     "04-food-drink/beer/japan-beer-info-source-research/report.md"
   ],
   "pages": [
+    "presentation.html",
     "03-itinerary/report-picks-route.md",
     "04-food-drink/coffee/tokyo-coffee-otaku-report.md",
     "04-food-drink/ramen/tokyo-ramen-otaku-report.md",

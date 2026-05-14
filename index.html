@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tokyo Trip Reports</title>
+  <title>도쿄 여행 리포트</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%E6%9D%B1%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
@@ -12,18 +13,19 @@
     <nav class="header-nav">
       <a class="brand" href="index.html">
         <span class="brand-mark">東</span>
-        <span>Tokyo Trip Reports</span>
+        <span>도쿄 여행 리포트</span>
       </a>
+      <a class="map-link" href="presentation.html">발표 HTML</a>
       <a class="map-link" href="trip-plan/05-map/trip-map.html">지도</a>
     </nav>
     <div class="index-heading">
       <p class="eyebrow">Tokyo 4N5D Planning Archive</p>
       <h1>리포트별로 바로 읽는 도쿄 여행 자료</h1>
-      <p>동선, 커피, 라멘, 스시, 사케, 맥주 리포트를 각각 독립 페이지로 정리했습니다.</p>
+      <p>전체 설명 프레젠테이션과 동선, 커피, 라멘, 스시, 사케, 맥주 리포트를 각각 독립 페이지로 정리했습니다.</p>
       <dl class="stats">
-        <div><dt>Reports</dt><dd>8</dd></div>
-        <div><dt>Docs</dt><dd>22</dd></div>
-        <div><dt>Built</dt><dd>2026-05-15 07:10 KST</dd></div>
+        <div><dt>리포트</dt><dd>9</dd></div>
+        <div><dt>문서</dt><dd>23</dd></div>
+        <div><dt>생성</dt><dd>2026-05-15 07:59 KST</dd></div>
       </dl>
     </div>
   </header>
@@ -31,7 +33,7 @@
   <main id="reports" class="index-main">
     <section class="toolbar" aria-label="Report filters">
       <label class="search-box">
-        <span>Search</span>
+        <span>검색</span>
         <input id="report-search" type="search" placeholder="스시, 라멘, beer, route">
       </label>
       <div class="filter-row">
@@ -40,41 +42,47 @@
     </section>
 
     <section class="report-grid">
-      <a class="report-card" href="trip-plan/03-itinerary/report-picks-route.html" data-category="route"
-      data-search="동선 route report picks route 리포트 후보를 다시 줄인 현실형 일정이다. 이번 기준은 &quot;진짜 가볼 만한가&quot;와 &quot;이번 4박 5일에 실패 확률이 낮은가&quot;를 분리하는 것이다. 03-itinerary/report-picks-route.md">
+      <a class="report-card" href="presentation.html" data-category="route"
+      data-search="발표 동선 presentation deck 전체 설명 도쿄 4박 5일 여행 계획">
+      <span class="card-category">발표</span>
+      <strong>도쿄 4박 5일 발표 HTML</strong>
+      <span>전체 여행 계획을 발표 자료처럼 훑어보는 HTML입니다. 기본 동선, 옵션 분기, 예약 리스크, 음식/술 리서치를 한 번에 봅니다.</span>
+      <small>docs/presentation.html</small>
+    </a><a class="report-card" href="trip-plan/03-itinerary/report-picks-route.html" data-category="route"
+      data-search="동선 route 리포트 기반 최종 동선 리포트 후보를 다시 줄인 현실형 일정이다. 이번 기준은 &quot;진짜 가볼 만한가&quot;와 &quot;이번 4박 5일에 실패 확률이 낮은가&quot;를 분리하는 것이다. 03-itinerary/report-picks-route.md">
       <span class="card-category">동선</span>
-      <strong>Report Picks Route</strong>
+      <strong>리포트 기반 최종 동선</strong>
       <span>리포트 후보를 다시 줄인 현실형 일정이다. 이번 기준은 &quot;진짜 가볼 만한가&quot;와 &quot;이번 4박 5일에 실패 확률이 낮은가&quot;를 분리하는 것이다.</span>
       <small>03-itinerary/report-picks-route.md</small>
     </a><a class="report-card" href="trip-plan/04-food-drink/coffee/tokyo-coffee-otaku-report.html" data-category="coffee"
-      data-search="커피 coffee tokyo coffee otaku report last updated: 2026-05-15 kst 04-food-drink/coffee/tokyo-coffee-otaku-report.md">
+      data-search="커피 coffee 도쿄 커피 덕후 리포트 최종 업데이트: 2026-05-15 kst 04-food-drink/coffee/tokyo-coffee-otaku-report.md">
       <span class="card-category">커피</span>
-      <strong>Tokyo Coffee Otaku Report</strong>
-      <span>Last updated: 2026-05-15 KST</span>
+      <strong>도쿄 커피 덕후 리포트</strong>
+      <span>최종 업데이트: 2026-05-15 KST</span>
       <small>04-food-drink/coffee/tokyo-coffee-otaku-report.md</small>
     </a><a class="report-card" href="trip-plan/04-food-drink/ramen/tokyo-ramen-otaku-report.html" data-category="ramen"
-      data-search="라멘 ramen tokyo ramen otaku report last updated: 2026-05-15 04-food-drink/ramen/tokyo-ramen-otaku-report.md">
+      data-search="라멘 ramen 도쿄 라멘 덕후 리포트 최종 업데이트: 2026-05-15 04-food-drink/ramen/tokyo-ramen-otaku-report.md">
       <span class="card-category">라멘</span>
-      <strong>Tokyo Ramen Otaku Report</strong>
-      <span>Last updated: 2026-05-15</span>
+      <strong>도쿄 라멘 덕후 리포트</strong>
+      <span>최종 업데이트: 2026-05-15</span>
       <small>04-food-drink/ramen/tokyo-ramen-otaku-report.md</small>
     </a><a class="report-card" href="trip-plan/04-food-drink/sushi/tokyo-sushi-omakase-report.html" data-category="sushi"
-      data-search="스시 sushi tokyo sushi omakase report last updated: 2026-05-15 kst 04-food-drink/sushi/tokyo-sushi-omakase-report.md">
+      data-search="스시 sushi 도쿄 스시 오마카세 리포트 최종 업데이트: 2026-05-15 kst 04-food-drink/sushi/tokyo-sushi-omakase-report.md">
       <span class="card-category">스시</span>
-      <strong>Tokyo Sushi Omakase Report</strong>
-      <span>Last updated: 2026-05-15 KST</span>
+      <strong>도쿄 스시 오마카세 리포트</strong>
+      <span>최종 업데이트: 2026-05-15 KST</span>
       <small>04-food-drink/sushi/tokyo-sushi-omakase-report.md</small>
     </a><a class="report-card" href="trip-plan/04-food-drink/sake/tokyo-sake-otaku-report.html" data-category="sake"
-      data-search="사케 sake tokyo sake otaku report last updated: 2026-05-15 kst 04-food-drink/sake/tokyo-sake-otaku-report.md">
+      data-search="사케 sake 도쿄 사케 덕후 리포트 최종 업데이트: 2026-05-15 kst 04-food-drink/sake/tokyo-sake-otaku-report.md">
       <span class="card-category">사케</span>
-      <strong>Tokyo Sake Otaku Report</strong>
-      <span>Last updated: 2026-05-15 KST</span>
+      <strong>도쿄 사케 덕후 리포트</strong>
+      <span>최종 업데이트: 2026-05-15 KST</span>
       <small>04-food-drink/sake/tokyo-sake-otaku-report.md</small>
     </a><a class="report-card" href="trip-plan/04-food-drink/beer/tokyo-beer-geek-bars/report.html" data-category="beer"
-      data-search="맥주 beer tokyo beer geek bars report last researched: 2026-05-15 04-food-drink/beer/tokyo-beer-geek-bars/report.md">
+      data-search="맥주 beer 도쿄 맥주덕후 바 리포트 최종 조사: 2026-05-15 04-food-drink/beer/tokyo-beer-geek-bars/report.md">
       <span class="card-category">맥주</span>
-      <strong>Tokyo Beer Geek Bars Report</strong>
-      <span>Last researched: 2026-05-15</span>
+      <strong>도쿄 맥주덕후 바 리포트</strong>
+      <span>최종 조사: 2026-05-15</span>
       <small>04-food-drink/beer/tokyo-beer-geek-bars/report.md</small>
     </a><a class="report-card" href="trip-plan/04-food-drink/beer/japan-beer-geek-research/report.html" data-category="beer"
       data-search="맥주 beer 일본 맥주덕들은 맥주집을 어디서 찾나 조사일: 2026-05-15 kst 04-food-drink/beer/japan-beer-geek-research/report.md">
@@ -91,7 +99,7 @@
     </a>
     </section>
 
-    <section class="doc-list"><h2>Related Trip Docs</h2><div class="table-wrap"><table><thead><tr><th>Title</th><th>Type</th><th>Source</th></tr></thead><tbody><tr><td><a href="trip-plan/03-itinerary/4n5d-itinerary.html">4N5D Draft Itinerary</a></td><td>동선</td><td>03-itinerary/4n5d-itinerary.md</td></tr><tr><td><a href="trip-plan/03-itinerary/coarse-route-combinations.html">Coarse Route Combination Report</a></td><td>동선</td><td>03-itinerary/coarse-route-combinations.md</td></tr><tr><td><a href="trip-plan/03-itinerary/day1-arrival-route-detail.html">Day 1 Arrival Route Detail</a></td><td>동선</td><td>03-itinerary/day1-arrival-route-detail.md</td></tr><tr><td><a href="trip-plan/03-itinerary/day2-sake-beer-route-detail.html">Day 2 Sake And Beer Route Detail</a></td><td>동선</td><td>03-itinerary/day2-sake-beer-route-detail.md</td></tr><tr><td><a href="trip-plan/03-itinerary/day3-reservation-dinner-route-detail.html">Day 3 Reservation Dinner Route Detail</a></td><td>동선</td><td>03-itinerary/day3-reservation-dinner-route-detail.md</td></tr><tr><td><a href="trip-plan/03-itinerary/day4-room-sake-route-detail.html">Day 4 Room Sake Route Detail</a></td><td>동선</td><td>03-itinerary/day4-room-sake-route-detail.md</td></tr><tr><td><a href="trip-plan/03-itinerary/day5-departure-route-detail.html">Day 5 Departure Route Detail</a></td><td>동선</td><td>03-itinerary/day5-departure-route-detail.md</td></tr><tr><td><a href="trip-plan/03-itinerary/optional-route-playbook.html">Optional Route Playbook</a></td><td>동선</td><td>03-itinerary/optional-route-playbook.md</td></tr><tr><td><a href="trip-plan/03-itinerary/reservation-wait-matrix.html">Reservation And Wait Matrix</a></td><td>동선</td><td>03-itinerary/reservation-wait-matrix.md</td></tr><tr><td><a href="trip-plan/04-food-drink/sake/room-sake-night.html">Room Sake Night</a></td><td>사케</td><td>04-food-drink/sake/room-sake-night.md</td></tr><tr><td><a href="trip-plan/04-food-drink/sushi/tokyo-sushi-evidence-dossier.html">Tokyo Sushi Evidence Dossier</a></td><td>스시</td><td>04-food-drink/sushi/tokyo-sushi-evidence-dossier.md</td></tr><tr><td><a href="trip-plan/04-food-drink/sushi/tokyo-sushi-hardcore-evaluation.html">Tokyo Sushi Hardcore Evaluation Matrix</a></td><td>스시</td><td>04-food-drink/sushi/tokyo-sushi-hardcore-evaluation.md</td></tr><tr><td><a href="trip-plan/04-food-drink/sushi/tokyo-sushi-map-locations.html">Tokyo Sushi Google Map Locations</a></td><td>스시</td><td>04-food-drink/sushi/tokyo-sushi-map-locations.md</td></tr><tr><td><a href="trip-plan/04-food-drink/sushi/tokyo-sushi-source-confidence-audit.html">Tokyo Sushi Source Confidence Audit</a></td><td>스시</td><td>04-food-drink/sushi/tokyo-sushi-source-confidence-audit.md</td></tr></tbody></table></div></section>
+    <section class="doc-list"><h2>함께 볼 문서</h2><div class="table-wrap"><table><thead><tr><th>제목</th><th>분류</th><th>원본</th></tr></thead><tbody><tr><td><a href="trip-plan/03-itinerary/4n5d-itinerary.html">도쿄 4박 5일 일정 초안</a></td><td>동선</td><td>03-itinerary/4n5d-itinerary.md</td></tr><tr><td><a href="trip-plan/03-itinerary/coarse-route-combinations.html">큰 동선 조합 리포트</a></td><td>동선</td><td>03-itinerary/coarse-route-combinations.md</td></tr><tr><td><a href="trip-plan/03-itinerary/day1-arrival-route-detail.html">1일차 도착 동선 상세</a></td><td>동선</td><td>03-itinerary/day1-arrival-route-detail.md</td></tr><tr><td><a href="trip-plan/03-itinerary/day2-sake-beer-route-detail.html">2일차 사케/맥주 동선 상세</a></td><td>동선</td><td>03-itinerary/day2-sake-beer-route-detail.md</td></tr><tr><td><a href="trip-plan/03-itinerary/day3-reservation-dinner-route-detail.html">3일차 예약 저녁 동선 상세</a></td><td>동선</td><td>03-itinerary/day3-reservation-dinner-route-detail.md</td></tr><tr><td><a href="trip-plan/03-itinerary/day4-room-sake-route-detail.html">4일차 방 사케 동선 상세</a></td><td>동선</td><td>03-itinerary/day4-room-sake-route-detail.md</td></tr><tr><td><a href="trip-plan/03-itinerary/day5-departure-route-detail.html">5일차 출국 동선 상세</a></td><td>동선</td><td>03-itinerary/day5-departure-route-detail.md</td></tr><tr><td><a href="trip-plan/03-itinerary/optional-route-playbook.html">옵션 동선 플레이북</a></td><td>동선</td><td>03-itinerary/optional-route-playbook.md</td></tr><tr><td><a href="trip-plan/03-itinerary/reservation-wait-matrix.html">예약/웨이팅 리스크 표</a></td><td>동선</td><td>03-itinerary/reservation-wait-matrix.md</td></tr><tr><td><a href="trip-plan/04-food-drink/sake/room-sake-night.html">숙소 사케 밤</a></td><td>사케</td><td>04-food-drink/sake/room-sake-night.md</td></tr><tr><td><a href="trip-plan/04-food-drink/sushi/tokyo-sushi-evidence-dossier.html">도쿄 스시 근거 자료집</a></td><td>스시</td><td>04-food-drink/sushi/tokyo-sushi-evidence-dossier.md</td></tr><tr><td><a href="trip-plan/04-food-drink/sushi/tokyo-sushi-hardcore-evaluation.html">도쿄 스시 덕후 평가표</a></td><td>스시</td><td>04-food-drink/sushi/tokyo-sushi-hardcore-evaluation.md</td></tr><tr><td><a href="trip-plan/04-food-drink/sushi/tokyo-sushi-map-locations.html">도쿄 스시 지도 위치표</a></td><td>스시</td><td>04-food-drink/sushi/tokyo-sushi-map-locations.md</td></tr><tr><td><a href="trip-plan/04-food-drink/sushi/tokyo-sushi-source-confidence-audit.html">도쿄 스시 출처 신뢰도 점검</a></td><td>스시</td><td>04-food-drink/sushi/tokyo-sushi-source-confidence-audit.md</td></tr></tbody></table></div></section>
   </main>
 
   <script src="assets/site.js"></script>
