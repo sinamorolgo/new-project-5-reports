@@ -1,0 +1,1158 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tokyo Trip Map</title>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f4;
+      --panel: #ffffff;
+      --ink: #17211d;
+      --muted: #66706a;
+      --line: #dce2dc;
+      --accent: #126c59;
+      --accent-ink: #ffffff;
+      --shadow: 0 10px 30px rgba(20, 34, 28, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+    }
+
+    body {
+      min-height: 100%;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    header {
+      padding: 18px 22px 14px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .title-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: 24px;
+      line-height: 1.15;
+      margin: 0;
+      letter-spacing: 0;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .search {
+      height: 40px;
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0 12px;
+      font-size: 15px;
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    button {
+      height: 36px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      padding: 0 12px;
+      font-size: 13px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    button.active {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: var(--accent-ink);
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(320px, 410px) 1fr;
+      min-height: 0;
+    }
+
+    aside {
+      min-height: 0;
+      overflow: auto;
+      padding: 16px;
+      border-right: 1px solid var(--line);
+      background: #fbfcfa;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .stat {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      min-height: 68px;
+    }
+
+    .stat b {
+      display: block;
+      font-size: 20px;
+      line-height: 1.15;
+      margin-bottom: 4px;
+    }
+
+    .stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .place-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .place-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      box-shadow: none;
+      cursor: pointer;
+    }
+
+    .place-card:hover,
+    .place-card:focus {
+      border-color: rgba(18, 108, 89, 0.55);
+      box-shadow: var(--shadow);
+      outline: none;
+    }
+
+    .place-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .place-name {
+      font-size: 15px;
+      font-weight: 750;
+      line-height: 1.35;
+      margin: 0 0 4px;
+    }
+
+    .place-area {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 42px;
+      height: 28px;
+      border-radius: 8px;
+      padding: 0 8px;
+      color: #fff;
+      background: var(--badge, #64748b);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .place-note {
+      color: #344039;
+      font-size: 13px;
+      line-height: 1.45;
+      margin: 8px 0 10px;
+    }
+
+    .place-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .place-foot a,
+    .popup a {
+      color: var(--accent);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    #map {
+      min-height: 540px;
+      height: 100%;
+      width: 100%;
+    }
+
+    .leaflet-popup-content-wrapper {
+      border-radius: 8px;
+    }
+
+    .popup {
+      min-width: 230px;
+      max-width: 290px;
+    }
+
+    .popup h2 {
+      margin: 0 0 6px;
+      font-size: 16px;
+      line-height: 1.3;
+      letter-spacing: 0;
+    }
+
+    .popup p {
+      margin: 6px 0;
+      line-height: 1.45;
+      color: #344039;
+    }
+
+    .popup small {
+      color: var(--muted);
+      display: block;
+      line-height: 1.4;
+      margin-top: 8px;
+    }
+
+    .marker {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--color);
+      color: #fff;
+      border: 2px solid #fff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.24);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    .empty {
+      padding: 18px;
+      color: var(--muted);
+      text-align: center;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    @media (max-width: 860px) {
+      header {
+        padding: 14px;
+      }
+
+      .title-row {
+        display: block;
+      }
+
+      .meta {
+        text-align: left;
+        margin-top: 6px;
+      }
+
+      .controls {
+        grid-template-columns: 1fr;
+      }
+
+      .filters {
+        justify-content: flex-start;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 2px;
+      }
+
+      button {
+        flex: 0 0 auto;
+      }
+
+      main {
+        grid-template-columns: 1fr;
+        grid-template-rows: 48vh auto;
+      }
+
+      #map {
+        min-height: 360px;
+        order: 1;
+      }
+
+      aside {
+        order: 2;
+        max-height: none;
+        border-right: 0;
+        border-top: 1px solid var(--line);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="title-row">
+        <div>
+          <h1>Tokyo Trip Map</h1>
+        </div>
+        <div class="meta">
+          2026.05.30 - 2026.06.03<br />
+          Base: Amber Iidabashi
+        </div>
+      </div>
+      <div class="controls">
+        <input id="search" class="search" type="search" placeholder="장소, 지역, 사케, 맥주, 돈카츠 검색" />
+        <div class="filters" aria-label="map filters">
+          <button class="active" data-filter="tokyo">도쿄</button>
+          <button data-filter="iidabashi">이이다바시</button>
+          <button data-filter="shinjuku">신주쿠</button>
+          <button data-filter="harajuku">하라주쿠</button>
+          <button data-filter="sake">사케</button>
+          <button data-filter="beer">맥주</button>
+          <button data-filter="report">리포트픽</button>
+          <button data-filter="high">고평점</button>
+          <button data-filter="fukuoka">후쿠오카</button>
+          <button data-filter="travel">공항</button>
+          <button data-filter="all">전체</button>
+        </div>
+      </div>
+    </header>
+    <main>
+      <aside>
+        <div class="stats">
+          <div class="stat"><b id="visibleCount">0</b><span>현재 표시</span></div>
+          <div class="stat"><b id="highCount">0</b><span>Tabelog 3.50+</span></div>
+          <div class="stat"><b>1</b><span>숙소 기준</span></div>
+        </div>
+        <div id="placeList" class="place-list"></div>
+      </aside>
+      <div id="map"></div>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const colors = {
+      lodging: "#2563eb",
+      sake: "#a15c16",
+      food: "#b42318",
+      ramen: "#7c2d12",
+      tonkatsu: "#991b1b",
+      sushi: "#be123c",
+      coffee: "#0f766e",
+      beer: "#b45309",
+      bar: "#6d28d9",
+      landmark: "#1d4ed8",
+      travel: "#475569",
+      fukuoka: "#15803d"
+    };
+
+    const places = [
+      {
+        id: "amber-iidabashi",
+        name: "Amber Iidabashi / 앰버 이다바시",
+        short: "숙",
+        category: "lodging",
+        area: "Iidabashi / Kagurazaka",
+        region: "tokyo",
+        lat: 35.706009,
+        lng: 139.741577,
+        rating: "숙소",
+        tabelog: null,
+        note: "여행 베이스. 신주쿠구 신오가와마치 5-13.",
+        source: "숙소 캡처",
+        address: "Shinjuku-ku Shinogawamachi 5-13, Tokyo 162-0814",
+        query: "Amber Iidabashi Shinjuku-ku Shinogawamachi 5-13"
+      },
+      {
+        id: "sake-bar-otonari",
+        name: "Sake Bar Otonari",
+        short: "酒",
+        category: "sake",
+        area: "Kagurazaka",
+        region: "tokyo",
+        lat: 35.70171866869431,
+        lng: 139.73913817461053,
+        rating: "Google 4.5 / Tabelog 3.40",
+        tabelog: 3.40,
+        note: "숙소권 사케 바 겸 이자카야.",
+        source: "숙소 주변 추천 캡처",
+        query: "Sake Bar Otonari Kagurazaka"
+      },
+      {
+        id: "le-ginglet",
+        name: "Le Ginglet Iidabashi",
+        short: "B",
+        category: "bar",
+        area: "Iidabashi",
+        region: "tokyo",
+        lat: 35.700836537891895,
+        lng: 139.74662838343457,
+        rating: "Google 4.1 / Tabelog 3.58",
+        tabelog: 3.58,
+        note: "내추럴 와인, 사케, 음식 같이 먹는 비스트로.",
+        source: "숙소 주변 추천 캡처",
+        query: "Le Ginglet Iidabashi"
+      },
+      {
+        id: "yakitori-torihiro",
+        name: "Yakitori Torihiro Kagurazaka / やきとり 鶏弘",
+        short: "焼",
+        category: "food",
+        area: "Kagurazaka",
+        region: "tokyo",
+        lat: 35.70282361466971,
+        lng: 139.74086285600544,
+        rating: "Tabelog 3.09",
+        tabelog: 3.09,
+        note: "이이다바시-가구라자카 사이 신상 고급 야키토리.",
+        source: "숙소 주변 추천 캡처",
+        query: "Yakitori Torihiro Kagurazaka"
+      },
+      {
+        id: "torichu-iidabashi",
+        name: "Sakegura Torichu Iidabashi / 酒ぐら 鳥酎 飯田橋",
+        short: "鳥",
+        category: "food",
+        area: "Iidabashi",
+        region: "tokyo",
+        lat: 35.70111563789171,
+        lng: 139.74661628343742,
+        rating: "Tabelog 3.40",
+        tabelog: 3.40,
+        note: "닭요리, 야키토리, 사케/소주 이자카야.",
+        source: "숙소 주변 추천 캡처",
+        query: "Sakegura Torichu Iidabashi"
+      },
+      {
+        id: "tsujita-iidabashi",
+        name: "Tsujita Iidabashi / つじ田 飯田橋店",
+        short: "麺",
+        category: "ramen",
+        area: "Iidabashi",
+        region: "tokyo",
+        lat: 35.701384518696806,
+        lng: 139.74628203460213,
+        rating: "Tabelog 3.44",
+        tabelog: 3.44,
+        note: "숙소 근처 유명 츠케멘/라멘.",
+        source: "숙소 주변 추천 캡처",
+        query: "Tsujita Iidabashi"
+      },
+      {
+        id: "tsujita-miso",
+        name: "Tsujita Miso Iidabashi / つじ田 味噌の章 飯田橋店",
+        short: "味",
+        category: "ramen",
+        area: "Iidabashi",
+        region: "tokyo",
+        lat: 35.70137453789144,
+        lng: 139.74629308344024,
+        rating: "Google 4.0 / Tabelog 3.39",
+        tabelog: 3.39,
+        note: "숙소 근처 미소 라멘.",
+        source: "숙소 주변 추천 캡처",
+        query: "Tsujita Miso Iidabashi"
+      },
+      {
+        id: "sanntora",
+        name: "Sanntora Edogawabashi / 三ん寅",
+        short: "麺",
+        category: "ramen",
+        area: "Edogawabashi / Iidabashi",
+        region: "tokyo",
+        lat: 35.70924674868676,
+        lng: 139.73040516469266,
+        rating: "Tabelog 3.82 / Ramen TOKYO Hyakumeiten",
+        tabelog: 3.82,
+        note: "숙소권 라멘 백업 1순위. 예약불가/15석/재료소진 리스크 있음.",
+        source: "Tabelog upgrade analysis + Tabelog",
+        address: "362 Yamabukicho, Shinjuku-ku, Tokyo",
+        query: "Sanntora Edogawabashi"
+      },
+      {
+        id: "kyorakutei",
+        name: "Kyorakutei Kagurazaka / 石臼挽き手打 蕎楽亭",
+        short: "蕎",
+        category: "food",
+        area: "Kagurazaka / Iidabashi",
+        region: "tokyo",
+        lat: 35.70078543869502,
+        lng: 139.73951614460083,
+        rating: "Tabelog 3.75 / Soba Hyakumeiten",
+        tabelog: 3.75,
+        note: "Tue lunch 기본 픽. 점심은 워크인 전제, 줄이 길면 Sanntora/Tsujita.",
+        source: "Tabelog upgrade analysis + Tabelog",
+        address: "Kagurazakakan 1F, 3-6 Kagurazaka, Shinjuku-ku, Tokyo",
+        query: "Kyorakutei Kagurazaka"
+      },
+      {
+        id: "tonkatsu-kenshin",
+        name: "Tonkatsu Kenshin Kagurazaka / とんかつ憲進",
+        short: "豚",
+        category: "tonkatsu",
+        area: "Kagurazaka",
+        region: "tokyo",
+        lat: 35.70225153788917,
+        lng: 139.7408922834529,
+        rating: "Google 4.5 / Tabelog 3.71",
+        tabelog: 3.71,
+        note: "숙소 근처 고점 돈카츠. Tonta 대안으로 현실성 좋음.",
+        source: "숙소 주변 추천 캡처",
+        query: "Tonkatsu Kenshin Kagurazaka"
+      },
+      {
+        id: "tonkatsu-en",
+        name: "Tonkatsu En Iidabashi / とんかつ えん",
+        short: "豚",
+        category: "tonkatsu",
+        area: "Iidabashi",
+        region: "tokyo",
+        lat: 35.70042604010145,
+        lng: 139.74769819541228,
+        rating: "Tabelog 3.05",
+        tabelog: 3.05,
+        note: "이이다바시 A4 근처 신상 돈카츠.",
+        source: "숙소 주변 추천 캡처",
+        query: "Tonkatsu En Iidabashi"
+      },
+      {
+        id: "imadeya-ginza",
+        name: "IMADEYA Ginza",
+        short: "酒",
+        category: "sake",
+        area: "Ginza",
+        region: "tokyo",
+        lat: 35.669598351339644,
+        lng: 139.7638470007469,
+        rating: "Tabelog 3.50",
+        tabelog: 3.50,
+        note: "Ginza Six B2F 사케 숍 + 유료 테이스팅 바.",
+        source: "카톡 캡처",
+        query: "IMADEYA Ginza Ginza Six"
+      },
+      {
+        id: "hasegawa-gransta",
+        name: "Hasegawa Saketen Gransta Tokyo / はせがわ酒店",
+        short: "酒",
+        category: "sake",
+        area: "Tokyo Station / Gransta",
+        region: "tokyo",
+        lat: 35.68143,
+        lng: 139.76715,
+        rating: "Official shop / 08:00-21:00",
+        tabelog: null,
+        note: "숙소 사케 밤의 메인 구매처. 좋은 냉장 사케를 사서 바로 Iidabashi로 복귀.",
+        source: "room sake night research",
+        address: "B1, 1-9-1 Marunouchi, Chiyoda-ku, Tokyo",
+        query: "Hasegawa Saketen Gransta Tokyo"
+      },
+      {
+        id: "daimaru-hoppe-town",
+        name: "Daimaru Tokyo Hoppe Town / 大丸東京 ほっぺタウン",
+        short: "惣",
+        category: "food",
+        area: "Tokyo Station / Yaesu",
+        region: "tokyo",
+        lat: 35.68173,
+        lng: 139.76847,
+        rating: "B1 depachika / official food hall",
+        tabelog: null,
+        note: "숙소 사케 밤 안주 구매처. 초밥, 도시락, 惣菜, 절임, 디저트.",
+        source: "room sake night research",
+        address: "1-9-1 Marunouchi, Chiyoda-ku, Tokyo",
+        query: "Daimaru Tokyo Hoppe Town"
+      },
+      {
+        id: "kinokuniya-gransta",
+        name: "Kinokuniya Entree Gransta Tokyo",
+        short: "市",
+        category: "food",
+        area: "Tokyo Station / Gransta",
+        region: "tokyo",
+        lat: 35.68182,
+        lng: 139.76804,
+        rating: "Official store / 07:00-23:00",
+        tabelog: null,
+        note: "역 안 고급 슈퍼/델리 백업. 술, 안주, 빵, 음료, 간단 델리.",
+        source: "room sake night research",
+        address: "JR East Tokyo Station, 1-9-1 Marunouchi, Chiyoda-ku",
+        query: "Kinokuniya Entree Gransta Tokyo"
+      },
+      {
+        id: "roar-coffee",
+        name: "ROAR COFFEE Tokyo Ginza SEVEN",
+        short: "C",
+        category: "coffee",
+        area: "Ginza",
+        region: "tokyo",
+        lat: 35.6680257387235,
+        lng: 139.76357278425303,
+        rating: "Tabelog 3.11",
+        tabelog: 3.11,
+        note: "Ginza Six 근처 커피 후보.",
+        source: "카톡 캡처",
+        query: "ROAR COFFEE Tokyo Ginza SEVEN"
+      },
+      {
+        id: "apollons-gold",
+        name: "Apollon's Gold Kitanomaru Espresso Bar",
+        short: "C",
+        category: "coffee",
+        area: "Kitanomaru / Kudanshita",
+        region: "tokyo",
+        lat: 35.6962007004231,
+        lng: 139.748885566372,
+        rating: "Coffee report pick / 09:00-18:00",
+        tabelog: null,
+        note: "리포트 통합안의 Sun morning coffee. 숙소에서 가깝고 13:00 이전 커피 규칙에 맞음.",
+        source: "coffee report + BrewAtlas/official",
+        address: "1 Chome-14-13 Kudankita, Chiyoda City, Tokyo 102-0073",
+        query: "Apollon's Gold Kitanomaru Espresso Bar"
+      },
+      {
+        id: "masters-dream-house",
+        name: "MASTER'S DREAM HOUSE Marunouchi",
+        short: "麦",
+        category: "beer",
+        area: "Marunouchi / Tokyo Station",
+        region: "tokyo",
+        lat: 35.683529437910295,
+        lng: 139.76992698324344,
+        rating: "Tabelog 3.48 / Suntory 神泡超達人店",
+        tabelog: 3.48,
+        note: "최종 맥주 픽. Suntory Master's Dream을 제대로 마시는 도쿄역 맥주 & 그릴.",
+        source: "Suntory official + Tabelog beer research",
+        address: "1-8-1 Marunouchi, Chiyoda-ku, Tokyo, Marunouchi Trust Tower N 1F",
+        query: "MASTER'S DREAM HOUSE Marunouchi"
+      },
+      {
+        id: "premium-malts-house",
+        name: "The PREMIUM MALT'S HOUSE",
+        short: "泡",
+        category: "beer",
+        area: "Tokyo Station / Yaesu",
+        region: "tokyo",
+        lat: 35.68172856134735,
+        lng: 139.77063532292487,
+        rating: "Tabelog 3.45 / only 神泡BAR",
+        tabelog: 3.45,
+        note: "푸어링/거품 체험감이 가장 강한 전국 유일 神泡BAR 후보.",
+        source: "Official site + Tabelog beer research",
+        address: "1-5-17 Yaesu, Chuo-ku, Tokyo, Yaesu Kagawa Building 1F",
+        query: "The PREMIUM MALT'S HOUSE Tokyo Station"
+      },
+      {
+        id: "kagurazaka-arbol",
+        name: "Kagurazaka ARBOL / 神楽坂ARBOL",
+        short: "麦",
+        category: "beer",
+        area: "Kagurazaka / Iidabashi",
+        region: "tokyo",
+        lat: 35.70234793788878,
+        lng: 139.73988158345458,
+        rating: "Tabelog 3.60 / Suntory 神泡超達人店",
+        tabelog: 3.60,
+        note: "숙소권에서 맥주 인증과 고평점 저녁 식사를 같이 잡는 후보.",
+        source: "Suntory official + Tabelog beer research",
+        address: "4-7 Kagurazaka, Shinjuku-ku, Tokyo 1F",
+        query: "Kagurazaka ARBOL"
+      },
+      {
+        id: "izakaya-sanma",
+        name: "Sanma Iidabashi / 居酒屋 秋刀魚",
+        short: "麦",
+        category: "beer",
+        area: "Iidabashi",
+        region: "tokyo",
+        lat: 35.698779637892905,
+        lng: 139.74568788341446,
+        rating: "Tabelog 3.41 / Suntory 神泡超達人店",
+        tabelog: 3.41,
+        note: "숙소 근처 로컬 해산물 이자카야 + 선토리 인증 맥주 백업.",
+        source: "Suntory official + Tabelog beer research",
+        address: "1-7-7 Fujimi, Chiyoda-ku, Tokyo, New Towa Building 1F",
+        query: "Izakaya Sanma Iidabashi"
+      },
+      {
+        id: "afuri-harajuku",
+        name: "AFURI Harajuku / AFURI 原宿",
+        short: "麺",
+        category: "ramen",
+        area: "Harajuku / Meiji Jingu",
+        region: "tokyo",
+        lat: 35.67301393789592,
+        lng: 139.70381078318357,
+        rating: "Google 4.4 / Tabelog 3.26",
+        tabelog: 3.26,
+        note: "도착일 점심 라멘 후보. 메이지신궁 전후로 넣기 편한 유자시오 라멘.",
+        source: "카톡 대화의 아후리 라멘 언급",
+        address: "3-63-1 Sendagaya, Shibuya, Tokyo",
+        query: "AFURI Harajuku"
+      },
+      {
+        id: "hotate-biyori",
+        name: "Tokyo Style Noodle ほたて日和",
+        short: "麺",
+        category: "ramen",
+        area: "Akihabara",
+        region: "tokyo",
+        lat: 35.69856387870843,
+        lng: 139.77716702455197,
+        rating: "Tabelog 3.85 / Ramen TOKYO Hyakumeiten",
+        tabelog: 3.85,
+        note: "라멘 리포트 1순위지만 고위험. 기명/입장시간이 깔끔할 때만, Sake Labo 보호.",
+        source: "ramen report + Tabelog",
+        address: "2-2 Kanda Sakumacho, Chiyoda-ku, Tokyo, Umeya Building",
+        query: "Tokyo Style Noodle Hotate Biyori Akihabara"
+      },
+      {
+        id: "ramen-matsui",
+        name: "RAMEN MATSUI",
+        short: "麺",
+        category: "ramen",
+        area: "Shinjuku Gyoen / Yotsuya",
+        region: "tokyo",
+        lat: 35.6891021,
+        lng: 139.7154516,
+        rating: "Tabelog 3.82 / Ramen TOKYO Hyakumeiten",
+        tabelog: 3.82,
+        note: "Day 3 optional lunch. Reservation-only via TableCheck, cash-only, no walk-ins.",
+        source: "ramen report + Day 3 route detail",
+        address: "Daia Palace Gyoenmae B-2, 4-25-10 Yotsuya, Shinjuku, Tokyo",
+        query: "RAMEN MATSUI 4-25-10 Yotsuya Shinjuku"
+      },
+      {
+        id: "meiji-jingu",
+        name: "Meiji Jingu / 明治神宮",
+        short: "宮",
+        category: "landmark",
+        area: "Harajuku / Meiji Jingu",
+        region: "tokyo",
+        lat: 35.6763976,
+        lng: 139.6993259,
+        rating: "Landmark",
+        tabelog: null,
+        note: "도착일 산책 후보. 하라주쿠역 바로 옆이라 AFURI와 묶기 좋음.",
+        source: "카톡 대화의 메이지신궁 언급",
+        address: "1-1 Yoyogikamizonocho, Shibuya, Tokyo",
+        query: "Meiji Jingu"
+      },
+      {
+        id: "sedai-coffee",
+        name: "Sedai Coffee and Roasters",
+        short: "C",
+        category: "coffee",
+        area: "Harajuku / Meiji Jingumae",
+        region: "tokyo",
+        lat: 35.664855047820375,
+        lng: 139.70601114232352,
+        rating: "Google 4.8 / Tabelog 3.15",
+        tabelog: 3.15,
+        note: "도착일 커피 후보. Google 후기가 높고 AFURI/메이지신궁 뒤에 붙이기 좋음.",
+        source: "카톡 Google Maps 링크와 후기 언급",
+        address: "1F, 5-29-9 Jingumae, Shibuya, Tokyo",
+        query: "Sedai Coffee and Roasters Jingumae",
+        mapUrl: "https://maps.app.goo.gl/Uk6QmhpwvCNbki2u6"
+      },
+      {
+        id: "sake-labo",
+        name: "Sake Labo Tokyo / サケラボトーキョー",
+        short: "酒",
+        category: "sake",
+        area: "Jujo / Kita-ku",
+        region: "tokyo",
+        lat: 35.76208745053703,
+        lng: 139.72203565925213,
+        rating: "Google 4.6 / Tabelog 3.55",
+        tabelog: 3.55,
+        note: "예약 전제 사케 코스/페어링 목적지. Tue closed.",
+        source: "사용자 추천글",
+        address: "B1F, 1-1-7 Jujonakahara, Kita-ku, Tokyo",
+        query: "Sake Labo Tokyo Jujo"
+      },
+      {
+        id: "sushi-yuuki",
+        name: "Sushi Yuuki / 鮨 ゆうき",
+        short: "鮨",
+        category: "sushi",
+        area: "Hiroo",
+        region: "tokyo",
+        lat: 35.649830832222456,
+        lng: 139.72040495831433,
+        rating: "Tabelog 4.28 / Sushi TOKYO Hyakumeiten",
+        tabelog: 4.28,
+        note: "스시 리포트 1순위 예약 와일드카드. 잡히면 Mon dinner를 대체.",
+        source: "sushi report + Tabelog",
+        address: "1F, 5-17-4 Hiroo, Shibuya-ku, Tokyo",
+        query: "Sushi Yuuki Hiroo Tokyo"
+      },
+      {
+        id: "kuwabara-shoten",
+        name: "Kuwabara Shoten / 桑原商店",
+        short: "酒",
+        category: "sake",
+        area: "Gotanda / Shinagawa",
+        region: "tokyo",
+        lat: 35.62457247873741,
+        lng: 139.72060277384426,
+        rating: "Google 4.4 / Tabelog 3.42",
+        tabelog: 3.42,
+        note: "사케 숍 + 각우치. 이번 일정에는 음주 영업 휴업 이슈가 있어 사케 구매 후보.",
+        source: "사용자 추천글",
+        address: "2 Chome-29-2 Nishigotanda, Shinagawa City, Tokyo",
+        query: "Kuwabara Shoten Gotanda"
+      },
+      {
+        id: "torishige",
+        name: "Torishige Shinjuku / 鳥茂",
+        short: "焼",
+        category: "food",
+        area: "Shinjuku / Yoyogi",
+        region: "tokyo",
+        lat: 35.687977918690216,
+        lng: 139.69886051449996,
+        rating: "Tabelog 4.06 / Tabelog Award Bronze",
+        tabelog: 4.06,
+        note: "Mon Shinjuku night의 진짜 미식 업그레이드. 예약/전화확인 전제, 현금-only.",
+        source: "Tabelog upgrade analysis + Tabelog",
+        address: "2-6-5 Yoyogi, Shibuya-ku, Tokyo",
+        query: "Torishige Shinjuku Yoyogi"
+      },
+      {
+        id: "yamane-shoten",
+        name: "Yamane Shoten / 山根商店",
+        short: "焼",
+        category: "food",
+        area: "Shinjuku",
+        region: "tokyo",
+        lat: 35.695285888688595,
+        lng: 139.70834849456708,
+        rating: "Google 4.2 / Tabelog 3.51",
+        tabelog: 3.51,
+        note: "신주쿠 0차 병맥 + 꼬치. 캐주얼 fallback, 현금 필요.",
+        source: "YouTube 영상 설명 + Google Maps 링크",
+        address: "6 Chome-27-11 Shinjuku, Shinjuku City, Tokyo",
+        query: "Yamane Shoten Shinjuku",
+        mapUrl: "https://maps.app.goo.gl/dwarzfQHiS46WzAL8"
+      },
+      {
+        id: "ramen-nagi",
+        name: "Ramen Nagi Shinjuku Golden Gai",
+        short: "麺",
+        category: "ramen",
+        area: "Shinjuku Golden Gai",
+        region: "tokyo",
+        lat: 35.693771608688344,
+        lng: 139.7045338145545,
+        rating: "Google 4.2 / Tabelog 3.64",
+        tabelog: 3.64,
+        note: "골든가이 24시간 니보시 라멘. 술 뒤 마무리.",
+        source: "YouTube 영상 설명 + Google Maps 링크",
+        address: "Kabukicho 1 Chome-1-10 2F, Shinjuku City, Tokyo",
+        query: "Ramen Nagi Shinjuku Golden Gai",
+        mapUrl: "https://maps.app.goo.gl/8Sq4o9Md53gsuJQDA"
+      },
+      {
+        id: "open-book",
+        name: "The OPEN BOOK",
+        short: "B",
+        category: "bar",
+        area: "Shinjuku Golden Gai",
+        region: "tokyo",
+        lat: 35.69407333788292,
+        lng: 139.70496358339545,
+        rating: "Google 4.0-4.3 / Tabelog 3.31",
+        tabelog: 3.31,
+        note: "골든가이 레몬사워 바. 나기 바로 근처.",
+        source: "YouTube 영상 설명 + Google Maps 링크",
+        address: "Kabukicho 1 Chome-1-6, Golden Gai 5th Street",
+        query: "Open Book Shinjuku Golden Gai",
+        mapUrl: "https://maps.app.goo.gl/TWUkb6i9LyL6siCP6"
+      },
+      {
+        id: "tonkatsu-tonta",
+        name: "Tonkatsu Tonta / とん太",
+        short: "豚",
+        category: "tonkatsu",
+        area: "Takadanobaba",
+        region: "tokyo",
+        lat: 35.715545278675144,
+        lng: 139.70650582477305,
+        rating: "Google 4.5 / Tabelog 3.82",
+        tabelog: 3.82,
+        note: "이번 리스트 최고점이지만 예약불가/18석. 5/30 토 저녁 try slot.",
+        source: "카톡 대화의 돈타 언급",
+        query: "Tonkatsu Tonta Takadanobaba"
+      },
+      {
+        id: "sakasho-sugawara",
+        name: "Sakasho Sugawara Fukuoka / 酒商菅原",
+        short: "福",
+        category: "fukuoka",
+        area: "Fukuoka / Tenjin-Minami",
+        region: "fukuoka",
+        lat: 33.58830137706317,
+        lng: 130.4024402898078,
+        rating: "Google 4.6 / Tabelog 3.29",
+        tabelog: 3.29,
+        note: "후쿠오카 사케 숍 + 카쿠우치. 영어 검색은 Sakasho Sugawara Fukuoka.",
+        source: "사용자 확인 요청",
+        query: "Sakasho Sugawara Watanabedori Fukuoka"
+      },
+      {
+        id: "icn",
+        name: "Incheon International Airport Terminal 1",
+        short: "ICN",
+        category: "travel",
+        area: "Seoul / Incheon",
+        region: "travel",
+        lat: 37.4602,
+        lng: 126.4407,
+        rating: "Outbound 07:10 / Return 22:45",
+        tabelog: null,
+        note: "제주항공 7C1173 출발, 7C1110 도착.",
+        source: "NOL 항공권 캡처",
+        query: "Incheon International Airport Terminal 1"
+      },
+      {
+        id: "nrt",
+        name: "Narita International Airport Terminal 3",
+        short: "NRT",
+        category: "travel",
+        area: "Tokyo / Narita",
+        region: "travel",
+        lat: 35.7738,
+        lng: 140.3874,
+        rating: "Arrive 09:45 / Depart 19:50",
+        tabelog: null,
+        note: "제주항공 7C1173 도착, 7C1110 출발.",
+        source: "NOL 항공권 캡처",
+        query: "Narita International Airport Terminal 3"
+      }
+    ];
+
+    const reportPickIds = new Set([
+      "tonkatsu-tonta",
+      "sake-labo",
+      "hasegawa-gransta",
+      "daimaru-hoppe-town",
+      "apollons-gold",
+      "hotate-biyori",
+      "masters-dream-house",
+      "sushi-yuuki",
+      "torishige",
+      "kyorakutei",
+      "sanntora"
+    ]);
+
+    const map = L.map("map", { zoomControl: true });
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    const markers = new Map();
+    const list = document.getElementById("placeList");
+    const search = document.getElementById("search");
+    const visibleCount = document.getElementById("visibleCount");
+    const highCount = document.getElementById("highCount");
+    let activeFilter = "tokyo";
+
+    function googleMapsUrl(place) {
+      if (place.mapUrl) return place.mapUrl;
+      const q = place.query || place.name;
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
+    }
+
+    function colorFor(place) {
+      return colors[place.category] || "#64748b";
+    }
+
+    function markerIcon(place) {
+      return L.divIcon({
+        className: "",
+        html: `<div class="marker" style="--color:${colorFor(place)}">${place.short}</div>`,
+        iconSize: [30, 30],
+        iconAnchor: [15, 15],
+        popupAnchor: [0, -16]
+      });
+    }
+
+    function popupHtml(place) {
+      return `
+        <div class="popup">
+          <h2>${place.name}</h2>
+          <p><strong>${place.area}</strong></p>
+          <p>${place.note}</p>
+          <p>${place.rating}</p>
+          ${place.address ? `<p>${place.address}</p>` : ""}
+          <p><a href="${googleMapsUrl(place)}" target="_blank" rel="noreferrer">Google Maps 열기</a></p>
+          <small>출처: ${place.source}</small>
+        </div>
+      `;
+    }
+
+    function matchesFilter(place) {
+      if (activeFilter === "all") return true;
+      if (activeFilter === "tokyo") return place.region === "tokyo";
+      if (activeFilter === "fukuoka") return place.region === "fukuoka";
+      if (activeFilter === "travel") return place.category === "travel";
+      if (activeFilter === "sake") return place.category === "sake";
+      if (activeFilter === "beer") return place.category === "beer";
+      if (activeFilter === "report") return reportPickIds.has(place.id);
+      if (activeFilter === "high") return place.tabelog !== null && place.tabelog >= 3.5;
+      if (activeFilter === "iidabashi") {
+        return ["Iidabashi", "Kagurazaka"].some((word) => place.area.includes(word));
+      }
+      if (activeFilter === "shinjuku") {
+        return place.area.includes("Shinjuku") || place.id === "tonkatsu-tonta";
+      }
+      if (activeFilter === "harajuku") {
+        return place.area.includes("Harajuku") || place.id === "tonkatsu-tonta";
+      }
+      return true;
+    }
+
+    function matchesSearch(place) {
+      const term = search.value.trim().toLowerCase();
+      if (!term) return true;
+      return [place.name, place.area, place.note, place.source, place.query, place.address]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase()
+        .includes(term);
+    }
+
+    function render() {
+      markers.forEach((marker) => marker.remove());
+      markers.clear();
+      list.innerHTML = "";
+
+      highCount.textContent = String(places.filter((place) => place.tabelog !== null && place.tabelog >= 3.5).length);
+      const visible = places.filter((place) => matchesFilter(place) && matchesSearch(place));
+      visibleCount.textContent = String(visible.length);
+
+      if (visible.length === 0) {
+        list.innerHTML = '<div class="empty">표시할 장소가 없습니다.</div>';
+        return;
+      }
+
+      const bounds = [];
+      visible.forEach((place) => {
+        const marker = L.marker([place.lat, place.lng], { icon: markerIcon(place) })
+          .bindPopup(popupHtml(place))
+          .addTo(map);
+        markers.set(place.id, marker);
+        bounds.push([place.lat, place.lng]);
+
+        const card = document.createElement("article");
+        card.className = "place-card";
+        card.tabIndex = 0;
+        card.innerHTML = `
+          <div class="place-head">
+            <div>
+              <h2 class="place-name">${place.name}</h2>
+              <div class="place-area">${place.area}</div>
+            </div>
+            <span class="badge" style="--badge:${colorFor(place)}">${place.short}</span>
+          </div>
+          <p class="place-note">${place.note}</p>
+          <div class="place-foot">
+            <span>${place.rating}</span>
+            <a href="${googleMapsUrl(place)}" target="_blank" rel="noreferrer">Maps</a>
+          </div>
+        `;
+        card.addEventListener("click", () => focusPlace(place));
+        card.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            focusPlace(place);
+          }
+        });
+        list.appendChild(card);
+      });
+
+      map.fitBounds(bounds, { padding: [34, 34], maxZoom: activeFilter === "all" ? 8 : 14 });
+    }
+
+    function focusPlace(place) {
+      const marker = markers.get(place.id);
+      map.setView([place.lat, place.lng], place.region === "fukuoka" ? 15 : 16, { animate: true });
+      if (marker) marker.openPopup();
+    }
+
+    document.querySelectorAll("[data-filter]").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll("[data-filter]").forEach((b) => b.classList.remove("active"));
+        button.classList.add("active");
+        activeFilter = button.dataset.filter;
+        render();
+      });
+    });
+
+    search.addEventListener("input", render);
+    render();
+  </script>
+</body>
+</html>
