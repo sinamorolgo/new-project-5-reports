@@ -115,6 +115,11 @@
       color: white;
     }
 
+    .nav-button:disabled {
+      cursor: not-allowed;
+      opacity: 0.44;
+    }
+
     .slide-counter {
       min-width: 58px;
       color: var(--muted);
@@ -291,7 +296,7 @@
       white-space: nowrap;
     }
 
-    .stop.앵커 {
+    .stop.anchor {
       border-color: var(--teal);
       background: var(--soft-teal);
       color: #083f3d;
@@ -382,6 +387,28 @@
 
     .panel li + li {
       margin-top: 6px;
+    }
+
+    .panel.wide {
+      grid-column: 1 / -1;
+    }
+
+    .panel .action-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .panel .action-list li {
+      border-left: 4px solid var(--teal);
+      background: rgba(255, 255, 255, 0.62);
+      padding: 10px 12px;
+    }
+
+    .panel .action-list li + li {
+      margin-top: 0;
     }
 
     .metric {
@@ -655,6 +682,10 @@
       table {
         min-width: 680px;
       }
+
+      .panel .action-list {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -665,11 +696,12 @@
       <span>도쿄 여행 발표 자료</span>
     </a>
     <nav class="nav-actions" aria-label="Presentation controls">
-      <a class="nav-link" href="index.html">리포트 홈</a>
+      <a class="nav-link" href="index.html">리포트 목록</a>
+      <a class="nav-link" href="#quick-read">결론</a>
       <a class="nav-link" href="trip-plan/05-map/trip-map.html">지도</a>
-      <button class="nav-button" type="button" id="prev-slide">이전</button>
-      <span class="slide-counter" id="slide-counter">1 / 18</span>
-      <button class="nav-button primary" type="button" id="next-slide">다음</button>
+      <button class="nav-button" type="button" id="prev-slide" aria-label="이전 슬라이드">이전</button>
+      <span class="slide-counter" id="slide-counter">1 / 20</span>
+      <button class="nav-button primary" type="button" id="next-slide" aria-label="다음 슬라이드">다음</button>
     </nav>
   </header>
   <div class="progress" aria-hidden="true"><div class="progress-bar" id="progress-bar"></div></div>
@@ -679,8 +711,8 @@
       <div class="slide-shell hero-grid">
         <div>
           <p class="eyebrow">2026 도쿄 4박 5일 계획 발표</p>
-          <h1>도쿄 4박 5일, 맛과 술 중심 실행안</h1>
-          <p class="lede">이이다바시/가구라자카를 베이스로, 사케·맥주·로컬 미식·캐주얼 맛집을 무리 없이 연결하는 여행 계획입니다.</p>
+          <h1>도쿄 4박 5일, 맛과 술 중심 여행안</h1>
+          <p class="lede">이이다바시와 가구라자카를 베이스로 사케, 맥주, 로컬 미식, 캐주얼 맛집을 무리 없이 엮은 계획입니다.</p>
           <ul class="summary-line">
             <li>2026.05.30 토요일 - 06.03 수요일</li>
             <li>Amber Iidabashi</li>
@@ -694,15 +726,15 @@
             <div class="route-stops">
               <span class="stop">NRT</span>
               <span class="stop">Harajuku</span>
-              <span class="stop try">Tonta?</span>
+              <span class="stop try">Tonta 조건부</span>
             </div>
           </div>
           <div class="route-track">
             <div class="route-day">2일차</div>
             <div class="route-stops">
-              <span class="stop 앵커">커피</span>
-              <span class="stop try">Hotate?</span>
-              <span class="stop 앵커">Sake Labo</span>
+              <span class="stop anchor">커피</span>
+              <span class="stop try">Hotate 조건부</span>
+              <span class="stop anchor">Sake Labo</span>
             </div>
           </div>
           <div class="route-track">
@@ -710,15 +742,15 @@
             <div class="route-stops">
               <span class="stop warn">예약</span>
               <span class="stop">Shinjuku</span>
-              <span class="stop">숙소권</span>
+              <span class="stop">숙소 근처</span>
             </div>
           </div>
           <div class="route-track">
             <div class="route-day">4일차</div>
             <div class="route-stops">
-              <span class="stop 앵커">Kyorakutei</span>
+              <span class="stop anchor">Kyorakutei</span>
               <span class="stop">도쿄역</span>
-              <span class="stop 앵커">방 사케</span>
+              <span class="stop anchor">숙소 사케 밤</span>
             </div>
           </div>
           <div class="route-track">
@@ -733,6 +765,38 @@
       </div>
     </section>
 
+    <section class="slide" id="quick-read">
+      <div class="slide-shell">
+        <div>
+          <p class="eyebrow">결론 먼저</p>
+          <h2>이 자료는 이렇게 읽으면 됩니다</h2>
+          <p class="lede">핵심은 기준 일정을 먼저 고정하고, 줄·예약·피로 변수는 현장에서 교체하는 방식입니다.</p>
+        </div>
+        <div class="option-grid">
+          <div class="panel soft-teal">
+            <h3>반드시 지킬 일정</h3>
+            <p>Sake Labo, Master's Dream, 숙소 사케 밤은 이번 여행의 중심입니다.</p>
+          </div>
+          <div class="panel soft-gold">
+            <h3>조건이 맞으면 시도</h3>
+            <p>Tonta와 Hotate는 성공하면 좋지만, 시간이 밀리거나 피곤하면 과감히 뺍니다.</p>
+          </div>
+          <div class="panel soft-red">
+            <h3>예약되면 교체</h3>
+            <p>Sushi Yuuki, Torishige, L'ETERRE는 예약이 잡힐 때 같은 시간대의 가벼운 일정을 덜어내고 넣습니다.</p>
+          </div>
+          <div class="panel wide soft-blue">
+            <h3>먼저 확인할 것</h3>
+            <ol class="action-list">
+              <li>Sake Labo Tokyo의 2026-05-31 일요일 저녁 예약을 확인합니다.</li>
+              <li>Sushi Yuuki 또는 Torishige의 2026-06-01 월요일 저녁 가능 시간을 확인합니다.</li>
+              <li>도착일 컨디션이 애매하면 Tonta보다 숙소 근처 회복을 우선합니다.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="slide" id="snapshot">
       <div class="slide-shell">
         <div>
@@ -744,7 +808,7 @@
           <div class="panel metric soft-teal">
             <span class="label">기준 숙소</span>
             <strong>Amber Iidabashi</strong>
-            <span>이이다바시/가구라자카 생활권. 숙소 근처 미식과 도쿄역 접근이 좋음.</span>
+            <span>이이다바시와 가구라자카를 편하게 오갈 수 있고, 숙소 근처 식사와 도쿄역 접근이 좋습니다.</span>
           </div>
           <div class="panel metric soft-blue">
             <span class="label">항공</span>
@@ -759,7 +823,7 @@
           <div class="panel metric soft-red">
             <span class="label">커피</span>
             <strong>13:00 이전만</strong>
-            <span>오후 커피는 제외. 커피 후보는 오전 일정에만 넣음.</span>
+            <span>오후 커피는 피하고, 커피 일정은 오전에만 넣습니다.</span>
           </div>
         </div>
       </div>
@@ -770,20 +834,20 @@
         <div>
           <p class="eyebrow">계획 논리</p>
           <h2>좋은 곳과 갈 수 있는 곳을 분리</h2>
-          <p class="lede">이번 일정은 유명한 줄서기 맛집을 모두 쌓는 방식이 아니라, 실패해도 무너지지 않는 앵커 중심입니다.</p>
+          <p class="lede">이번 일정은 유명한 줄 서는 맛집을 모두 쌓는 방식이 아니라, 실패해도 무너지지 않는 핵심 일정 중심으로 잡았습니다.</p>
         </div>
         <div class="option-grid">
           <div class="panel soft-teal">
-            <h3>앵커</h3>
-            <p>Sake Labo, Master's Dream, Kyorakutei, 방 사케 밤처럼 예약/실행 가능성이 높은 축.</p>
+            <h3>일정 기준점</h3>
+            <p>Sake Labo, Master's Dream, Kyorakutei, 숙소 사케 밤처럼 예약과 실행 가능성이 높은 일정입니다.</p>
           </div>
           <div class="panel soft-gold">
-            <h3>시도 슬롯</h3>
-            <p>Tonta, Hotate Biyori처럼 조건이 맞으면 대박이지만, 기본 일정으로 믿으면 위험한 후보.</p>
+            <h3>조건부 시도</h3>
+            <p>Tonta, Hotate Biyori처럼 조건이 맞으면 만족도가 크지만, 기본 일정으로 고정하면 위험한 선택지입니다.</p>
           </div>
           <div class="panel soft-red">
-            <h3>예약 성공 시 대박 후보</h3>
-            <p>Sushi Yuuki, Torishige, L'ETERRE처럼 잡히면 하루를 통째로 바꿀 가치가 있는 후보.</p>
+            <h3>예약되면 하루를 바꿀 후보</h3>
+            <p>Sushi Yuuki, Torishige, L'ETERRE처럼 잡히면 하루를 통째로 바꿀 가치가 있는 후보입니다.</p>
           </div>
         </div>
       </div>
@@ -793,33 +857,33 @@
       <div class="slide-shell">
         <div>
           <p class="eyebrow">가장 좋은 기본 동선</p>
-          <h2>기본안은 균형형 최선 루트</h2>
-          <p class="lede">토요일은 서쪽 시도 슬롯, 일요일은 사케 앵커, 월요일은 예약 저녁, 화요일은 방 사케, 수요일은 출국일 안전 모드로 둡니다.</p>
+          <h2>기본안은 가장 균형이 좋습니다</h2>
+          <p class="lede">토요일은 서쪽 조건부 시도, 일요일은 사케 중심 일정, 월요일은 예약 저녁, 화요일은 숙소 사케 밤, 수요일은 출국일 안전 모드로 둡니다.</p>
         </div>
         <div class="day-grid">
           <div class="panel day-card">
             <span class="date">토요일 05/30</span>
             <span class="theme">도착 + Tonta 시도</span>
-            <span class="route">NRT → Amber → AFURI/Meiji → Tonta 여부 판단</span>
-            <div class="tag-row"><span class="tag try">시도 슬롯</span><span class="tag risk">도착일 리스크</span></div>
+            <span class="route">NRT → Amber → AFURI/Meiji → Tonta 시도 여부 판단</span>
+            <div class="tag-row"><span class="tag try">조건부 시도</span><span class="tag risk">도착일 변수 큼</span></div>
           </div>
           <div class="panel day-card">
             <span class="date">일요일 05/31</span>
             <span class="theme">커피 + 맥주 + 사케</span>
-            <span class="route">Apollon's Gold → Hotate? → Master's Dream → Sake Labo</span>
-            <div class="tag-row"><span class="tag must">앵커</span><span class="tag try">라멘은 선택</span></div>
+            <span class="route">Apollon's Gold → Hotate 조건부 → Master's Dream → Sake Labo</span>
+            <div class="tag-row"><span class="tag must">핵심 일정</span><span class="tag try">라멘은 상황 따라</span></div>
           </div>
           <div class="panel day-card">
             <span class="date">월요일 06/01</span>
             <span class="theme">예약 저녁</span>
-            <span class="route">Sushi Yuuki 또는 Torishige. 실패하면 신주쿠 분위기 루트나 숙소권 대안.</span>
-            <div class="tag-row"><span class="tag risk">예약 아니면 제외</span></div>
+            <span class="route">Sushi Yuuki 또는 Torishige. 실패하면 신주쿠 분위기 루트나 숙소 근처 대안으로 갑니다.</span>
+            <div class="tag-row"><span class="tag risk">예약 실패 시 제외</span></div>
           </div>
           <div class="panel day-card">
             <span class="date">화요일 06/02</span>
-            <span class="theme">숙소권 점심 + 방 사케</span>
+            <span class="theme">숙소 근처 점심 + 숙소 사케 밤</span>
             <span class="route">Kyorakutei → Daimaru/Gransta → Hasegawa → Amber</span>
-            <div class="tag-row"><span class="tag must">낮은 마찰</span></div>
+            <div class="tag-row"><span class="tag must">부담 낮음</span></div>
           </div>
           <div class="panel day-card">
             <span class="date">수요일 06/03</span>
@@ -835,29 +899,29 @@
       <div class="slide-shell split">
         <div>
           <p class="eyebrow">1일차</p>
-          <h2>도착일은 이기려고 하지 말고 망치지 않기</h2>
-          <p class="lede">Tonta는 강하지만 도착일 변수와 대기 리스크가 큽니다. 컨디션이 좋을 때만 시도합니다.</p>
+          <h2>도착일은 무리하지 않는 게 핵심</h2>
+          <p class="lede">Tonta는 강하지만 도착일 변수와 대기 위험이 큽니다. 컨디션이 좋을 때만 시도합니다.</p>
           <div class="source-links">
             <a href="trip-plan/03-itinerary/day1-arrival-route-detail.html">1일차 상세</a>
-            <a href="trip-plan/03-itinerary/reservation-wait-matrix.html">리스크 표</a>
+            <a href="trip-plan/03-itinerary/reservation-wait-matrix.html">예약/대기 위험도</a>
           </div>
         </div>
         <div class="timeline panel">
           <div class="time-row">
             <div class="time">09:45</div>
-            <div class="time-body"><strong>NRT T3 도착</strong><span>실제 landside는 10:30-11:00 정도로 잡기.</span></div>
+            <div class="time-body"><strong>NRT T3 도착</strong><span>공항을 빠져나오는 시간은 10:30-11:00 정도로 잡습니다.</span></div>
           </div>
           <div class="time-row">
             <div class="time">12:40-13:20</div>
-            <div class="time-body"><strong>Amber Iidabashi 도착/짐 처리</strong><span>늦어지면 Harajuku/Meiji 블록을 줄임.</span></div>
+            <div class="time-body"><strong>Amber Iidabashi 도착/짐 처리</strong><span>늦어지면 하라주쿠/메이지신궁 일정을 줄입니다.</span></div>
           </div>
           <div class="time-row">
             <div class="time">14:10</div>
-            <div class="time-body"><strong>AFURI Harajuku + Meiji Jingu</strong><span>점심과 산책. 13시 이후 카페인은 스킵.</span></div>
+            <div class="time-body"><strong>AFURI Harajuku + Meiji Jingu</strong><span>점심과 산책을 함께 처리합니다. 13시 이후 카페인은 피합니다.</span></div>
           </div>
           <div class="time-row">
             <div class="time">16:45-17:10</div>
-            <div class="time-body"><strong>Tonta 줄 판단</strong><span>줄/피로가 심하면 바로 포기. 여행 전체 체력을 우선.</span></div>
+            <div class="time-body"><strong>Tonta 줄 판단</strong><span>줄이 길거나 피로가 크면 바로 포기합니다. 여행 전체 체력을 우선합니다.</span></div>
           </div>
         </div>
       </div>
@@ -867,8 +931,8 @@
       <div class="slide-shell split">
         <div>
           <p class="eyebrow">2일차</p>
-          <h2>Sake Labo를 보호하는 일요일</h2>
-          <p class="lede">Hotate Biyori는 성공하면 좋지만, Sake Labo와 Master's Dream을 위협하면 바로 내려놓습니다.</p>
+          <h2>Sake Labo 일정은 흔들리지 않게</h2>
+          <p class="lede">Hotate Biyori는 성공하면 좋지만, Sake Labo와 Master's Dream 일정에 부담이 되면 바로 포기합니다.</p>
           <div class="source-links">
             <a href="trip-plan/03-itinerary/day2-sake-beer-route-detail.html">2일차 상세</a>
             <a href="https://github.com/sinamorolgo/new-project-5/blob/main/trip-plan/04-food-drink/beer/suntory-masters.md" target="_blank" rel="noopener">선토리 맥주</a>
@@ -878,19 +942,19 @@
         <div class="pick-grid">
           <div class="panel soft-teal">
             <h3>Apollon's Gold</h3>
-            <p>숙소권에서 오전 커피 규칙과 잘 맞는 메인 커피 후보.</p>
+            <p>숙소 근처에서 오전 커피 규칙과 잘 맞는 주요 커피 후보입니다.</p>
           </div>
           <div class="panel soft-gold">
-            <h3>Hotate Biyori?</h3>
-            <p>등록/기명 시간이 깔끔하고 13:15 이후로 밀리지 않을 때만.</p>
+            <h3>Hotate Biyori 조건부</h3>
+            <p>대기 명단 등록 시간이 깔끔하고 13:15 이후로 밀리지 않을 때만 시도합니다.</p>
           </div>
           <div class="panel soft-blue">
             <h3>Master's Dream House</h3>
-            <p>선토리 Master's Dream과 神泡 목적에 가장 정확한 맥주 스톱.</p>
+            <p>선토리 Master's Dream과 고운 거품(神泡) 목적에 가장 잘 맞는 맥주 목적지입니다.</p>
           </div>
           <div class="panel soft-red">
             <h3>Sake Labo Tokyo</h3>
-            <p>이날의 진짜 주인공. 18:00-18:30 예약이 베스트.</p>
+            <p>이날의 중심 일정입니다. 18:00-18:30 예약이 가장 좋습니다.</p>
           </div>
         </div>
       </div>
@@ -900,8 +964,8 @@
       <div class="slide-shell">
         <div>
           <p class="eyebrow">3일차</p>
-          <h2>월요일은 예약 결과로 갈림</h2>
-          <p class="lede">워크인 기적을 믿지 않고, 예약 성공 여부에 따라 하루의 성격을 바꿉니다.</p>
+          <h2>월요일은 예약 결과에 따라 갈립니다</h2>
+          <p class="lede">예약 없이 들어갈 수 있다는 기대에 걸지 않고, 예약 성공 여부에 따라 하루의 성격을 바꿉니다.</p>
         </div>
         <div class="table-wrap">
           <table>
@@ -915,28 +979,28 @@
             </thead>
             <tbody>
               <tr>
-                <td>스시 Jackpot</td>
+                <td>스시 예약 성공안</td>
                 <td>Sushi Yuuki 예약 성공</td>
                 <td>가벼운 하루 → 스시 → 복귀</td>
-                <td>라멘/야키토리 2차 풀코스 금지</td>
+                <td>라멘과 야키토리 2차 풀코스는 넣지 않습니다</td>
               </tr>
               <tr>
-                <td>Torishige Serious</td>
+                <td>Torishige 미식안</td>
                 <td>스시 실패, Torishige 예약 성공</td>
                 <td>가벼운 하루 → Torishige → 가벼운 한 잔</td>
-                <td>현금 준비, 워크인 기대 금지</td>
+                <td>현금을 준비하고, 예약 없이 들어갈 기대는 하지 않습니다</td>
               </tr>
               <tr>
-                <td>Shinjuku Mood</td>
-                <td>강한 예약이 없고 기분이 좋을 때</td>
+                <td>신주쿠 분위기안</td>
+                <td>확실한 예약이 없고 기분이 좋을 때</td>
                 <td>Yamane → Nagi → OPEN BOOK</td>
-                <td>재미 루트지 미식 증명 루트는 아님</td>
+                <td>분위기를 즐기는 루트이며, 미식 근거가 강한 선택지는 아닙니다</td>
               </tr>
               <tr>
-                <td>숙소권 Recovery</td>
-                <td>전날이 무겁거나 컨디션 저하</td>
+                <td>숙소 근처 회복안</td>
+                <td>전날이 무겁거나 컨디션이 떨어졌을 때</td>
                 <td>Iidabashi/Kagurazaka 저녁</td>
-                <td>다음 날 방 사케를 살림</td>
+                <td>다음 날 숙소 사케 밤을 지킵니다</td>
               </tr>
             </tbody>
           </table>
@@ -948,29 +1012,29 @@
       <div class="slide-shell split">
         <div>
           <p class="eyebrow">4일차</p>
-          <h2>한 번은 숙소에서 진짜 좋은 사케 밤</h2>
+          <h2>한 번은 숙소에서 좋은 사케와 안주로</h2>
           <p class="lede">외식만 계속하지 않고, 도쿄역에서 좋은 사케와 안주를 사서 숙소에서 먹는 밤을 넣습니다.</p>
           <div class="source-links">
             <a href="trip-plan/03-itinerary/day4-room-sake-route-detail.html">4일차 상세</a>
-            <a href="trip-plan/04-food-drink/sake/room-sake-night.html">방 사케 가이드</a>
+            <a href="trip-plan/04-food-drink/sake/room-sake-night.html">숙소 사케 가이드</a>
           </div>
         </div>
         <div class="timeline panel">
           <div class="time-row">
             <div class="time">점심</div>
-            <div class="time-body"><strong>Kyorakutei Kagurazaka</strong><span>줄이 길면 Sanntora, 쉬운 모드면 Tsujita.</span></div>
+            <div class="time-body"><strong>Kyorakutei Kagurazaka</strong><span>줄이 길면 Sanntora로, 편하게 가고 싶으면 Tsujita로 바꿉니다.</span></div>
           </div>
           <div class="time-row">
-            <div class="time">Late PM</div>
-            <div class="time-body"><strong>Daimaru / Gransta food</strong><span>스시·사시미, 튀김/구이, 절임/채소, 작은 디저트.</span></div>
+            <div class="time">오후 늦게</div>
+            <div class="time-body"><strong>Daimaru / Gransta 안주 쇼핑</strong><span>스시·사시미, 튀김/구이, 절임/채소, 작은 디저트를 고릅니다.</span></div>
           </div>
           <div class="time-row">
-            <div class="time">Last</div>
-            <div class="time-body"><strong>Hasegawa Saketen Gransta</strong><span>차가운 720ml 사케는 마지막에 사고 곧장 숙소로.</span></div>
+            <div class="time">마지막</div>
+            <div class="time-body"><strong>Hasegawa Saketen Gransta</strong><span>차가운 720ml 사케는 마지막에 사고 곧장 숙소로 이동합니다.</span></div>
           </div>
           <div class="time-row">
-            <div class="time">Night</div>
-            <div class="time-body"><strong>Amber Iidabashi 방 사케</strong><span>피로도는 낮고 여행다운 만족도는 높은 밤.</span></div>
+            <div class="time">밤</div>
+            <div class="time-body"><strong>Amber Iidabashi 숙소 사케 밤</strong><span>피로도는 낮고 여행다운 만족도는 높은 밤입니다.</span></div>
           </div>
         </div>
       </div>
@@ -981,7 +1045,7 @@
         <div>
           <p class="eyebrow">5일차</p>
           <h2>귀국일은 욕심을 줄이는 게 승리</h2>
-          <p class="lede">짐을 먼저 해결하고, 점심은 숙소권에서만. 목적지 식사는 금지합니다.</p>
+          <p class="lede">짐을 먼저 해결하고, 점심은 숙소 근처에서만 먹습니다. 출국일에는 멀리 가는 식사를 넣지 않습니다.</p>
           <div class="source-links">
             <a href="trip-plan/03-itinerary/day5-departure-route-detail.html">5일차 상세</a>
             <a href="https://github.com/sinamorolgo/new-project-5/blob/main/trip-plan/01-trip-basics/trip-basics.md" target="_blank" rel="noopener">항공 기본 정보</a>
@@ -990,10 +1054,10 @@
         <div class="panel soft-blue">
           <h3>공항 이동 기준</h3>
           <ul>
-            <li>기본 점심은 Tsujita 또는 이이다바시 근처 간단식.</li>
-            <li>Kyorakutei/Kenshin 보강은 짐과 시간이 완전히 해결됐을 때만.</li>
-            <li>15:30-15:45에는 Amber/짐 보관 지점에서 출발.</li>
-            <li>Nippori 16:25 또는 16:45 Skyliner를 목표. 17:05는 회복용.</li>
+            <li>기본 점심은 Tsujita나 이이다바시 근처 간단식으로 잡습니다.</li>
+            <li>Kyorakutei나 Kenshin은 짐과 시간이 완전히 해결됐을 때만 추가로 시도합니다.</li>
+            <li>15:30-15:45에는 Amber 또는 짐 보관 지점에서 출발합니다.</li>
+            <li>Nippori 16:25 또는 16:45 Skyliner를 목표로 잡고, 17:05는 회복용으로 둡니다.</li>
           </ul>
         </div>
       </div>
@@ -1003,7 +1067,7 @@
       <div class="slide-shell">
         <div>
           <p class="eyebrow">우선순위 선택</p>
-          <h2>진짜 슬롯을 받을 후보</h2>
+          <h2>실제로 일정에 넣을 후보</h2>
           <p class="lede">리포트 후보 중 일정에 실제로 넣을 만한 곳만 추린 결과입니다.</p>
         </div>
         <div class="table-wrap">
@@ -1013,38 +1077,38 @@
                 <th>역할</th>
                 <th>선택</th>
                 <th>이유</th>
-                <th>리스크</th>
+                <th>위험도</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>사케 저녁</td>
                 <td>Sake Labo Tokyo</td>
-                <td>사케 페어링/코스 목적성이 확실함</td>
-                <td><span class="status mid">Reserve</span></td>
+                <td>사케 페어링과 코스 목적성이 확실합니다</td>
+                <td><span class="status mid">예약 필요</span></td>
               </tr>
               <tr>
-                <td>맥주 스톱</td>
+                <td>맥주 목적지</td>
                 <td>MASTER'S DREAM HOUSE</td>
-                <td>선토리 Master's Dream/神泡 목적에 정확</td>
+                <td>선토리 Master's Dream과 고운 거품(神泡) 목적에 잘 맞습니다</td>
                 <td><span class="status low">낮음-중간</span></td>
               </tr>
               <tr>
-                <td>숙소권 점심</td>
+                <td>숙소 근처 점심</td>
                 <td>Kyorakutei</td>
-                <td>숙소권 고점 소바/튀김</td>
-                <td><span class="status mid">Walk-in</span></td>
+                <td>숙소 근처의 고평점 소바/튀김</td>
+                <td><span class="status mid">예약 없이 방문</span></td>
               </tr>
               <tr>
-                <td>방 사케 밤</td>
+                <td>숙소 사케 밤</td>
                 <td>Hasegawa + Daimaru/Gransta</td>
-                <td>예약 없이 사케덕후 밤 완성</td>
+                <td>예약 없이도 사케를 좋아하는 사람에게 좋은 밤을 만들 수 있습니다</td>
                 <td><span class="status low">낮음</span></td>
               </tr>
               <tr>
-                <td>고점 조건부 시도</td>
+                <td>고평점 조건부 시도</td>
                 <td>Tonta / Hotate</td>
-                <td>성공하면 강하지만 일정 앵커로는 위험</td>
+                <td>성공하면 강하지만 일정의 기준점으로 삼기에는 위험합니다</td>
                 <td><span class="status high">높음</span></td>
               </tr>
             </tbody>
@@ -1056,26 +1120,26 @@
     <section class="slide" id="tabelog">
       <div class="slide-shell">
         <div>
-          <p class="eyebrow">다베로그 관점</p>
-          <h2>고평점은 강력하지만, 실행성이 필터</h2>
-          <p class="lede">Tabelog 3.50+는 이미 강한 후보, 3.70+는 목적지급으로 봤습니다. 다만 예약/줄/현금/휴무가 일정 편입 여부를 가릅니다.</p>
+          <p class="eyebrow">타베로그 관점</p>
+          <h2>고평점은 강력하지만, 실행 가능성이 기준</h2>
+          <p class="lede">Tabelog 3.50 이상은 이미 강한 후보, 3.70 이상은 일부러 찾아갈 만한 곳으로 봤습니다. 다만 예약, 줄, 현금 결제, 휴무 여부가 실제 일정 반영을 가릅니다.</p>
         </div>
         <div class="pick-grid">
           <div class="panel soft-red">
             <h3>예약되면 최상위</h3>
-            <p>Kasahara, Ishikawa, Kohaku, Shinohara, L'ETERRE. 잡히면 하루를 바꾸지만 기본안은 아님.</p>
+            <p>Kasahara, Ishikawa, Kohaku, Shinohara, L'ETERRE. 예약이 잡히면 하루를 바꿀 수 있지만 기본안은 아닙니다.</p>
           </div>
           <div class="panel soft-gold">
-            <h3>강하지만 리스크 있음</h3>
-            <p>Tonta, Hotate Biyori, Sushi Yuuki, Torishige. 예약/당일 조건이 맞을 때만.</p>
+            <h3>강하지만 위험도 있음</h3>
+            <p>Tonta, Hotate Biyori, Sushi Yuuki, Torishige. 예약이나 당일 조건이 맞을 때만 넣습니다.</p>
           </div>
           <div class="panel soft-teal">
             <h3>현실적으로 강한 후보</h3>
-            <p>Kyorakutei, Tonkatsu Kenshin, Sanntora. 숙소권에서 회복 가능한 고점 후보.</p>
+            <p>Kyorakutei, Tonkatsu Kenshin, Sanntora는 숙소 근처에서 회복 가능한 고평점 후보입니다.</p>
           </div>
           <div class="panel soft-blue">
             <h3>목적형 후보</h3>
-            <p>MASTER'S DREAM HOUSE는 고평점 미식보다 푸어링 목적지가 정확해서 유지.</p>
+            <p>MASTER'S DREAM HOUSE는 미식 점수보다 "잘 따른 맥주"라는 목적에 잘 맞아서 남겼습니다.</p>
           </div>
         </div>
       </div>
@@ -1091,27 +1155,27 @@
         <div class="option-grid">
           <div class="panel soft-red">
             <h3>Sake Labo</h3>
-            <p>예약 기반의 사케 코스. 이번 여행의 사케 디너 앵커.</p>
+            <p>예약 기반의 사케 코스입니다. 이번 여행에서 사케 저녁의 중심 일정입니다.</p>
           </div>
           <div class="panel soft-teal">
-            <h3>방 사케</h3>
-            <p>Hasegawa에서 좋은 720ml, Daimaru/Gransta에서 안주. 가장 낮은 리스크의 좋은 밤.</p>
+            <h3>숙소 사케 밤</h3>
+            <p>Hasegawa에서 좋은 720ml 사케를 사고, Daimaru/Gransta에서 안주를 사오는 밤입니다. 위험도는 낮고 만족도는 높습니다.</p>
           </div>
           <div class="panel soft-blue">
             <h3>Master's Dream</h3>
-            <p>선토리 Master's Dream을 제대로 한두 잔 마시는 목적형 맥주 스톱.</p>
+            <p>선토리 Master's Dream을 제대로 한두 잔 마시는 목적형 맥주 코스입니다.</p>
           </div>
           <div class="panel soft-gold">
-            <h3>맥덕 추가 옵션</h3>
-            <p>POPEYE는 탭 다양성, DRY-DOCK/Beer Blvd.는 푸어링 비교가 목적.</p>
+            <h3>맥주 집중 선택지</h3>
+            <p>POPEYE는 탭 다양성, DRY-DOCK/Beer Blvd.는 맥주를 따르는 방식 비교가 목적입니다.</p>
           </div>
           <div class="panel">
-            <h3>숙소권 사케 백업</h3>
-            <p>Otonari, Le Ginglet, Sanma/Torichu는 숙소권 회복 옵션.</p>
+            <h3>숙소 근처 사케 대안</h3>
+            <p>Otonari, Le Ginglet, Sanma/Torichu는 멀리 가기 싫은 밤에 쓰기 좋은 대안입니다.</p>
           </div>
           <div class="panel">
             <h3>규칙</h3>
-            <p>맥덕 루트는 스시/Torishige/Sake Labo 같은 메인 저녁과 합치지 않음.</p>
+            <p>맥주 중심 루트는 스시, Torishige, Sake Labo 같은 메인 저녁과 합치지 않습니다.</p>
           </div>
         </div>
       </div>
@@ -1127,19 +1191,19 @@
         <div class="pick-grid">
           <div class="panel soft-teal">
             <h3>커피</h3>
-            <p>Apollon's Gold를 오전 메인으로. ACID/Sedai는 동선 또는 시간 조건이 맞을 때만.</p>
+            <p>Apollon's Gold를 오전의 주요 후보로 둡니다. ACID와 Sedai는 동선이나 시간 조건이 맞을 때만 넣습니다.</p>
           </div>
           <div class="panel soft-gold">
             <h3>라멘</h3>
-            <p>Hotate Biyori가 가장 강하지만 고마찰. Sanntora/Tsujita는 숙소권 백업.</p>
+            <p>Hotate Biyori가 가장 강하지만 진입 난도가 높습니다. Sanntora와 Tsujita는 숙소 근처 대안으로 둡니다.</p>
           </div>
           <div class="panel soft-red">
             <h3>스시</h3>
-            <p>Sushi Yuuki는 예약 성공 시 월요일 저녁 대체급. 예약 없으면 삭제.</p>
+            <p>Sushi Yuuki는 예약에 성공하면 월요일 저녁을 대체할 수 있습니다. 예약이 없으면 일정에서 뺍니다.</p>
           </div>
           <div class="panel soft-blue">
             <h3>돈카츠</h3>
-            <p>Tonta는 토요일 조건부 시도. 실패하면 Kenshin을 보강 후보로 둠.</p>
+            <p>Tonta는 토요일 조건부 시도로 둡니다. 실패하면 Kenshin을 대안으로 봅니다.</p>
           </div>
         </div>
       </div>
@@ -1148,21 +1212,21 @@
     <section class="slide" id="조건부">
       <div class="slide-shell split">
         <div>
-          <p class="eyebrow">선택 Playbook</p>
-          <h2>옵션은 추가가 아니라 교체</h2>
+          <p class="eyebrow">선택 기준</p>
+          <h2>선택지는 추가가 아니라 교체</h2>
           <p class="lede">좋아 보이는 후보를 계속 붙이면 일정이 무거워집니다. 하나를 켜면 하나를 빼는 방식으로 운영합니다.</p>
           <div class="source-links">
-            <a href="trip-plan/03-itinerary/optional-route-playbook.html">옵션 플레이북</a>
+            <a href="trip-plan/03-itinerary/optional-route-playbook.html">선택지 판단표</a>
           </div>
         </div>
         <div class="panel soft-gold">
           <h3>교체 규칙</h3>
           <ul>
-            <li>Sushi Yuuki가 잡히면 Yamane/Nagi/OPEN BOOK은 뺀다.</li>
-            <li>Torishige가 잡히면 야키토리 0차와 무거운 라멘을 빼준다.</li>
-            <li>Hotate가 성공하면 RAMEN MATSUI 욕심은 줄인다.</li>
-            <li>Beer Club POPEYE를 넣으면 월요일 캐주얼 루트 또는 화요일 방 사케를 줄인다.</li>
-            <li>L'ETERRE가 잡히면 방 사케 밤과 경쟁시킨다.</li>
+            <li>Sushi Yuuki가 잡히면 Yamane/Nagi/OPEN BOOK은 뺍니다.</li>
+            <li>Torishige가 잡히면 야키토리 0차와 무거운 라멘을 빼줍니다.</li>
+            <li>Hotate가 성공하면 RAMEN MATSUI 욕심은 줄입니다.</li>
+            <li>Beer Club POPEYE를 넣으면 월요일 캐주얼 루트 또는 화요일 숙소 사케 밤을 줄입니다.</li>
+            <li>L'ETERRE가 예약되면 숙소 사케 밤을 대체할지 비교합니다.</li>
           </ul>
         </div>
       </div>
@@ -1171,17 +1235,17 @@
     <section class="slide" id="booking">
       <div class="slide-shell split">
         <div>
-          <p class="eyebrow">예약 순서</p>
+          <p class="eyebrow">예약 우선순위</p>
           <h2>예약 순서는 이대로</h2>
           <p class="lede">가장 먼저 잡아야 할 것은 하루 전체를 정하는 예약들입니다.</p>
         </div>
         <div class="panel">
           <ol>
-            <li>Sake Labo Tokyo, 2026-05-31 일요일 저녁.</li>
-            <li>Sushi Yuuki, 2026-06-01 월요일 저녁 or clean 저녁 slot.</li>
-            <li>Torishige Shinjuku, Sushi Yuuki 실패 시 월요일 저녁.</li>
-            <li>MASTER'S DREAM HOUSE Marunouchi, 앉아서 마실 계획이면 예약.</li>
-            <li>고급 예약이 떠도 방 사케 밤과 직접 비교한 뒤 교체.</li>
+            <li>Sake Labo Tokyo는 2026-05-31 일요일 저녁 예약을 먼저 확인합니다.</li>
+            <li>Sushi Yuuki는 2026-06-01 월요일 저녁이나 깔끔하게 비는 저녁 시간대를 확인합니다.</li>
+            <li>Sushi Yuuki가 실패하면 Torishige Shinjuku의 월요일 저녁 예약을 확인합니다.</li>
+            <li>MASTER'S DREAM HOUSE Marunouchi는 앉아서 마실 계획이면 예약합니다.</li>
+            <li>고급 예약 기회가 생겨도 숙소 사케 밤과 비교한 뒤 교체합니다.</li>
           </ol>
         </div>
       </div>
@@ -1191,7 +1255,7 @@
       <div class="slide-shell">
         <div>
           <p class="eyebrow">중단 기준</p>
-          <h2>이 조건이면 바로 접는다</h2>
+          <h2>이 조건이면 바로 접습니다</h2>
           <p class="lede">실패 판단을 미리 정해두면 현장에서 덜 지칩니다.</p>
         </div>
         <div class="table-wrap">
@@ -1203,15 +1267,57 @@
               </tr>
             </thead>
             <tbody>
-              <tr><td>1일차 hotel arrival after 14:00</td><td>Tonta는 컨디션이 아주 좋을 때만</td></tr>
-              <tr><td>Tonta line already brutal</td><td>즉시 포기하고 숙소권 식사</td></tr>
-              <tr><td>Hotate 복귀 시간이 애매함</td><td>Sake Labo 보호를 위해 스킵</td></tr>
-              <tr><td>Sushi Yuuki not booked</td><td>Hiroo로 가서 운에 걸지 않음</td></tr>
-              <tr><td>Torishige not booked</td><td>저녁 확정 후보로 보지 않음</td></tr>
-              <tr><td>Kyorakutei line too long</td><td>Sanntora or Tsujita로 전환</td></tr>
-              <tr><td>5일차 luggage not solved by 15:45</td><td>옵션 전부 중단, 바로 공항 루트</td></tr>
+              <tr><td>1일차 숙소 도착이 14:00 이후</td><td>Tonta는 컨디션이 아주 좋을 때만 시도합니다</td></tr>
+              <tr><td>Tonta 줄이 이미 감당하기 어려움</td><td>즉시 포기하고 숙소 근처에서 식사합니다</td></tr>
+              <tr><td>Hotate 복귀 시간이 애매함</td><td>Sake Labo 일정을 지키기 위해 건너뜁니다</td></tr>
+              <tr><td>Sushi Yuuki 예약 실패</td><td>히로오까지 이동해 운에 맡기지 않습니다</td></tr>
+              <tr><td>Torishige 예약 실패</td><td>저녁 확정 후보로 보지 않습니다</td></tr>
+              <tr><td>Kyorakutei 줄이 너무 김</td><td>Sanntora 또는 Tsujita로 전환합니다</td></tr>
+              <tr><td>5일차 15:45까지 짐 문제가 해결되지 않음</td><td>선택지는 전부 중단하고 바로 공항으로 이동합니다</td></tr>
             </tbody>
           </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="appendix-candidates">
+      <div class="slide-shell">
+        <div>
+          <p class="eyebrow">보조 후보</p>
+          <h2>빠지면 아쉬운 보조 후보들</h2>
+          <p class="lede">기본 일정에는 넣지 않았지만, 전체 리서치 맥락을 설명하려면 이 후보들도 한 줄씩 남기는 편이 맞습니다.</p>
+        </div>
+        <div class="option-grid">
+          <div class="panel soft-blue">
+            <h3>IMADeya Ginza</h3>
+            <p>일요일 Ginza/Marunouchi 흐름에서 사케를 구경하거나 가볍게 시음할 때 좋습니다. Sake Labo 전에는 과음하지 않는 보조 코스로만 둡니다.</p>
+          </div>
+          <div class="panel soft-gold">
+            <h3>The PREMIUM MALT'S HOUSE</h3>
+            <p>거품과 푸어링 체험감이 강한 대안입니다. Master's Dream이 목적이면 Marunouchi 후보를 우선합니다.</p>
+          </div>
+          <div class="panel soft-teal">
+            <h3>Kuwabara Shoten</h3>
+            <p>고탄다의 사케숍 겸 각우치 후보입니다. 이번 일정에서는 위치와 음주 영업 변수가 있어 구매 후보로만 염두에 둡니다.</p>
+          </div>
+          <div class="panel">
+            <h3>AFURI / Meiji / Sedai</h3>
+            <p>도착일 하라주쿠 블록입니다. AFURI와 메이지신궁은 동선용으로 두고, Sedai는 13:00 이후 카페인 규칙 때문에 선택적 휴식으로만 봅니다.</p>
+          </div>
+          <div class="panel">
+            <h3>숙소 근처 대안</h3>
+            <p>Otonari, Le Ginglet, ARBOL, Sanma, Torichu는 숙소 근처에서 가볍게 회복할 때 쓰기 좋습니다. 주인공은 아니지만 밤이 무거울 때 유용합니다.</p>
+          </div>
+          <div class="panel soft-red">
+            <h3>Sakasho Sugawara Fukuoka</h3>
+            <p>후쿠오카로 여행이 확장될 때 참고할 사케 메모입니다. 이번 도쿄 4박 5일 실행안에서는 제외합니다.</p>
+          </div>
+        </div>
+        <div class="source-links">
+          <a href="https://github.com/sinamorolgo/new-project-5/blob/main/trip-plan/04-food-drink/tokyo-places.md" target="_blank" rel="noopener">도쿄 장소 원문</a>
+          <a href="https://github.com/sinamorolgo/new-project-5/blob/main/trip-plan/04-food-drink/fukuoka-note.md" target="_blank" rel="noopener">후쿠오카 메모 원문</a>
+          <a href="trip-plan/04-food-drink/beer/tokyo-beer-geek-bars/report.html">맥주 리포트</a>
+          <a href="trip-plan/04-food-drink/sake/tokyo-sake-otaku-report.html">사케 리포트</a>
         </div>
       </div>
     </section>
@@ -1220,20 +1326,20 @@
       <div class="slide-shell">
         <div>
           <p class="eyebrow">나중에 보는 법</p>
-          <h2>GitHub에서 눌러볼 링크</h2>
-          <p class="lede">이 발표 HTML은 큰 그림용이고, 세부 실행은 지도와 각 리포트로 들어가면 됩니다.</p>
+          <h2>나중에 바로 열 링크</h2>
+          <p class="lede">이 발표 자료는 큰 그림용이고, 세부 실행은 지도와 각 리포트로 들어가면 됩니다.</p>
         </div>
         <div class="source-links">
-          <a href="index.html">리포트 홈</a>
+          <a href="index.html">리포트 목록</a>
           <a href="trip-plan/05-map/trip-map.html">전체 지도</a>
           <a href="trip-plan/03-itinerary/report-picks-route.html">최종 동선</a>
           <a href="trip-plan/03-itinerary/4n5d-itinerary.html">4박 5일 일정</a>
-          <a href="trip-plan/03-itinerary/reservation-wait-matrix.html">예약/웨이팅</a>
-          <a href="trip-plan/03-itinerary/optional-route-playbook.html">옵션 분기</a>
+          <a href="trip-plan/03-itinerary/reservation-wait-matrix.html">예약/대기</a>
+          <a href="trip-plan/03-itinerary/optional-route-playbook.html">선택지 분기</a>
           <a href="trip-plan/04-food-drink/beer/tokyo-beer-geek-bars/report.html">맥주 리포트</a>
-          <a href="trip-plan/04-food-drink/sake/room-sake-night.html">방 사케 밤</a>
+          <a href="trip-plan/04-food-drink/sake/room-sake-night.html">숙소 사케 밤</a>
         </div>
-        <p class="footer-note">GitHub Pages 기준 예상 URL: https://sinamorolgo.github.io/new-project-5/presentation.html</p>
+        <p class="footer-note">GitHub Pages 주소: https://sinamorolgo.github.io/new-project-5/presentation.html</p>
       </div>
     </section>
 
@@ -1242,12 +1348,12 @@
         <div>
           <p class="eyebrow">최종 보기</p>
           <h2>현재 최선의 조합</h2>
-          <p class="lede">Sake Labo를 중심으로 한 술/미식 여행에, Tonta·Hotate·스시는 조건부로 붙이는 안입니다.</p>
+          <p class="lede">Sake Labo를 중심으로 한 술과 미식 여행에, Tonta·Hotate·스시는 상황이 좋을 때만 붙이는 안입니다.</p>
         </div>
         <div class="panel soft-teal">
           <h3>한 줄 계획</h3>
-          <p>토요일 도착일 시도, 일요일 사케 앵커, 월요일 예약 성공 시 대박 후보, 화요일 방 사케로 회복, 수요일 안전한 출국.</p>
-          <p>여기서 예약이 하나라도 크게 잡히면 옵션 플레이북대로 같은 시간대의 기본 블록을 빼고 갈아끼웁니다.</p>
+          <p>토요일은 도착 후 상황이 좋을 때만 시도, 일요일은 사케 중심 일정, 월요일은 예약 성공 여부에 따른 미식 후보, 화요일은 숙소 사케 밤으로 회복, 수요일은 안전한 출국.</p>
+          <p>여기서 예약이 하나라도 크게 잡히면 선택지 판단표대로 같은 시간대의 기본 블록을 빼고 갈아끼웁니다.</p>
         </div>
       </div>
     </section>
@@ -1269,6 +1375,12 @@
       if (progressBar) {
         const progress = ((activeIndex + 1) / slides.length) * 100;
         progressBar.style.width = `${progress}%`;
+      }
+      if (prevButton) {
+        prevButton.disabled = activeIndex === 0;
+      }
+      if (nextButton) {
+        nextButton.disabled = activeIndex === slides.length - 1;
       }
     }
 
